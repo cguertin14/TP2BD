@@ -1,51 +1,51 @@
-create table Entreprises
+CREATE TABLE ENTREPRISES
 (
-	NUMENT INT IDENTITY(0,1),
+	NUMENT INT IDENTITY(1,1),
 	NOMENT VARCHAR(40),
 	ADRESSEENT VARCHAR(120),
-	TELENT VARCHAR(20),
-	CONTACTENT VARCHAR(25),
+	TELENT VARCHAR(30),
+	CONTACTENT VARCHAR(30),
 	CONSTRAINT PKENT PRIMARY KEY (NUMENT)
 );
 
-create table Moniteurs
+CREATE TABLE MONITEURS
 (
-	NUMTR INT IDENTITY(0,1),
-	NOMTR VARCHAR(12),
-	PRENOMMONIT VARCHAR(12),
-	COURRIEL VARCHAR(30),
+	NUMTR INT IDENTITY(1,1),
+	NOMTR VARCHAR(30),
+	PRENOMTR VARCHAR(30),
+	COURRIEL VARCHAR(50),
 	NUMENT INT,
 	CONSTRAINT FKNUMENT1 FOREIGN KEY (NUMENT)  REFERENCES ENTREPRISES(NUMENT),
 	CONSTRAINT PKMTR PRIMARY KEY (NUMTR)
 );
 
-create table SUPERVISEURS
+CREATE TABLE SUPERVISEURS
 (
-	NUMSVR INT IDENTITY(0,1),
-	NOMSVR VARCHAR(12),
-	PRENOMSVR VARCHAR(12),
-	COURRIEL VARCHAR(30),
+	NUMSVR INT IDENTITY(1,1),
+	NOMSVR VARCHAR(30),
+	PRENOMSVR VARCHAR(30),
+	COURRIEL VARCHAR(50),
 	CONSTRAINT PKSUP PRIMARY KEY (NUMSVR)
 );
 
-create table STAGIAIRES
+CREATE TABLE STAGIAIRES
 (
-	NUMAD INT IDENTITY(0,1),
-	NOMSTAGI VARCHAR(12),
-	PRENOMSTAGI VARCHAR(12),
-	COURRIEL VARCHAR(30),
+	NUMAD INT IDENTITY(1,1),
+	NOMSTG VARCHAR(30),
+	PRENOMSTG VARCHAR(30),
+	COURRIEL VARCHAR(50),
 	NUMSVR INT,
 	CONSTRAINT FKNUMSVR FOREIGN KEY (NUMSVR)  REFERENCES SUPERVISEURS(NUMSVR),
 	CONSTRAINT PKSTAGIAIRE PRIMARY KEY (NUMAD)
 );
 
-create table Stages
+CREATE TABLE STAGES
 (
-	NUMSTAGE INT IDENTITY(0,1),
-	DESCRIPTION VARCHAR(120),
+	NUMSTAGE INT IDENTITY(1,1),
+	DESCRIPTION TEXT,
 	TYPESTG VARCHAR(10),
 	LANGAGES VARCHAR(120),
-	PLATEFORME VARCHAR(25),
+	PLATEFORME VARCHAR(50),
 	NUMENT INT,
 	NUMTR INT,
 	NUMAD INT,
@@ -54,3 +54,22 @@ create table Stages
 	CONSTRAINT FKNUMAD  FOREIGN KEY (NUMAD)   REFERENCES STAGIAIRES(NUMAD),
 	CONSTRAINT PKSTAGE  PRIMARY KEY (NUMSTAGE)
 );
+
+/* 
+
+QUESTION 3 c) 
+
+Pour implémenter la relation de composition dans ma base de données, j'ai fait des 'FOREIGN KEY' dans les tables
+nécessaires pour faire des liens comme par exemple 'one to many' ou 'many to many' ou n'importe quel autre lien.
+
+Les avantages que ces liens m'apportent:
+	1- Je peux accéder facilement à mes données,
+	2- Mes données sont liées et très sécurisées,
+	3- Il est facile de se retrouver dans ma base de données.
+
+Les inconvénients que ces liens m'apportent:
+	1- Plus de validation de données à faire lors d'insertions de données,
+	2- Le temps de développement peut être plus long pour des grosses relations du genre 'many to many',
+	3- etc.
+				
+*/
