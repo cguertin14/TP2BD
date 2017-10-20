@@ -15,5 +15,11 @@ namespace CSharpApp
         {
             return Text;
         }
+
+        public ComboBoxItem(string Text, object Value)
+        {
+            this.Text = Text;
+            this.Value = Value;
+        }
     }
 }

@@ -25,12 +25,55 @@ namespace CSharpApp
         {
             DB.Initialize();
             setUi();
-            fillEtudiants();
+            fillInformations();
         }
 
-        private void fillEtudiants()
+        private void fillInformations()
         {
-            DB.getEtudiants(DGV_Etudiants); 
+            // ComboBox styles
+            CMB_AddStage_Entreprise.DropDownStyle = ComboBoxStyle.DropDownList;
+            CMB_AddStage_Moniteur.DropDownStyle   = ComboBoxStyle.DropDownList;
+            CMB_AddStage_Stagiaire.DropDownStyle  = ComboBoxStyle.DropDownList;
+            CMB_ChooseEntreprise1.DropDownStyle   = ComboBoxStyle.DropDownList;
+
+            // ComboBox event
+            CMB_AddStage_Entreprise.TextChanged += CMB_AddStage_Entreprise_Text_Changed;
+
+            // Disable buttons         
+            BTN_ModifyDescription.Enabled = false;
+            BTN_DeleteStage2.Enabled = false;
+            BTN_AddStage.Enabled = false;
+            
+            // Set text listeners
+            RTB_Description.TextChanged += RTB_Description_Text_Changed;
+            RTB_AddStage_Description.TextChanged += RTB_AddStage_Text_Changed;
+            RTB_AddStage_Langages.TextChanged += RTB_AddStage_Text_Changed;
+            RTB_AddStage_Plateforme.TextChanged += RTB_AddStage_Text_Changed;
+            RTB_AddStage_TypeStg.TextChanged += RTB_AddStage_Text_Changed;
+            CMB_AddStage_Entreprise.TextChanged += RTB_AddStage_Text_Changed;
+            CMB_AddStage_Moniteur.TextChanged += RTB_AddStage_Text_Changed;
+            CMB_AddStage_Stagiaire.TextChanged += RTB_AddStage_Text_Changed;
+
+            // Fill ComboBoxes
+            DB.getMoniteurs(CMB_AddStage_Moniteur);
+            DB.getEntreprises(CMB_AddStage_Entreprise);
+            DB.getStagiaires(CMB_AddStage_Stagiaire);
+            DB.getEntreprises(CMB_ChooseEntreprise1);
+
+            // Set selected indexes
+            CMB_AddStage_Entreprise.SelectedIndex = 0;
+            CMB_AddStage_Moniteur.SelectedIndex = 0;
+            CMB_AddStage_Stagiaire.SelectedIndex = 0;
+            CMB_ChooseEntreprise1.SelectedIndex = 0;
+
+            // Set label value
+            LBL_NbStages.Text = DB.getNbStagesByEntreprise(Int32.Parse((CMB_ChooseEntreprise1.SelectedItem as ComboBoxItem).Value.ToString())).ToString();
+
+            // Set DGVs Contents
+            DB.getStagesDGV(DGV_Panel1);
+            DB.getEtudiants(DGV_Etudiants);
+            DB.getStagesFromEntreprise((CMB_ChooseEntreprise1.SelectedItem as ComboBoxItem).Text.ToString(), DGV_StagesEntreprise);
+            DB.getStagesDGV(DGV_DeleteStage);
         }
 
         #region UI
@@ -186,17 +229,67 @@ namespace CSharpApp
 
         private void BTN_ModifyDescription_Click(object sender, EventArgs e)
         {
-
+            // Get selected row data
+            var data = DGV_Panel1.SelectedRows[0];
+            // Update description of stage in database
+            DB.updateDescription(new Database.Models.Stage(data,RTB_Description.Text));
+            // Rerun query to get all stages (updated)
+            DB.getStagesDGV(DGV_Panel1);
+            // Empty the description rich text box.
+            RTB_Description.Text = "";
+            // Reload DGVs
+            DB.getStagesDGV(DGV_Panel1);
+            DB.getEtudiants(DGV_Etudiants);
+            DB.getStagesFromEntreprise((CMB_ChooseEntreprise1.SelectedItem as ComboBoxItem).Text.ToString(), DGV_StagesEntreprise);
+            DB.getStagesDGV(DGV_DeleteStage);
         }
 
         private void BTN_DeleteStage_Click(object sender, EventArgs e)
         {
-
+            DialogResult dialogResult = MessageBox.Show("Êtes vous sûr de vouloir supprimer ce stage?", "Supprimer stage",
+                                                        MessageBoxButtons.YesNo,MessageBoxIcon.Warning);
+            if (dialogResult == DialogResult.Yes)
+            {
+                // Get row data
+                var data = DGV_DeleteStage.SelectedRows[0];
+                // Delete stage in database
+                DB.deleteStage(new Database.Models.Stage(data));
+                // Reload data in dgv
+                DB.getStagesDGV(DGV_DeleteStage);
+                // Disable buttons
+                BTN_DeleteStage2.Enabled = false;
+                // Reload DGVs
+                DB.getStagesDGV(DGV_Panel1);
+                DB.getEtudiants(DGV_Etudiants);
+                DB.getStagesFromEntreprise((CMB_ChooseEntreprise1.SelectedItem as ComboBoxItem).Text.ToString(), DGV_StagesEntreprise);
+                DB.getStagesDGV(DGV_DeleteStage);
+            }
         }
 
         private void BTN_AddStage_Click(object sender, EventArgs e)
         {
-
+            // Add stage in database
+            DB.addStage(new Database.Models.Stage(
+                                                  RTB_AddStage_Description.Text,
+                                                  RTB_AddStage_TypeStg.Text,
+                                                  RTB_AddStage_Langages.Text,
+                                                  RTB_AddStage_Plateforme.Text,
+                                                  Int32.Parse((CMB_AddStage_Entreprise.SelectedItem as ComboBoxItem).Value.ToString()),
+                                                  Int32.Parse((CMB_AddStage_Moniteur.SelectedItem as ComboBoxItem).Value.ToString()),
+                                                  Int32.Parse((CMB_AddStage_Stagiaire.SelectedItem as ComboBoxItem).Value.ToString())
+                                                 )
+            );
+            // Reset UI
+            RTB_AddStage_Description.Text = "";
+            RTB_AddStage_Langages.Text = "";
+            RTB_AddStage_Plateforme.Text = "";
+            RTB_AddStage_TypeStg.Text = "";
+            BTN_AddStage.Enabled = false;
+            // Reload DGVs
+            DB.getStagesDGV(DGV_Panel1);
+            DB.getEtudiants(DGV_Etudiants);
+            DB.getStagesFromEntreprise((CMB_ChooseEntreprise1.SelectedItem as ComboBoxItem).Text.ToString(), DGV_StagesEntreprise);
+            DB.getStagesDGV(DGV_DeleteStage);
         }
 
         #endregion
@@ -205,7 +298,19 @@ namespace CSharpApp
 
         private void CMB_ChooseEntreprise1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Set label value
+            LBL_NbStages.Text = DB.getNbStagesByEntreprise(Int32.Parse((CMB_ChooseEntreprise1.SelectedItem as ComboBoxItem).Value.ToString())).ToString();
+            // Set dgv content
+            DB.getStagesFromEntreprise((CMB_ChooseEntreprise1.SelectedItem as ComboBoxItem).Text.ToString(), DGV_StagesEntreprise);
+        }
 
+        private void CMB_AddStage_Entreprise_Text_Changed(object sender, EventArgs e)
+        {
+            if (CMB_AddStage_Entreprise.Items.Count > 0)
+            {
+                // Update moniteurs combobox
+                DB.getMoniteursFromEntreprise(CMB_AddStage_Moniteur, Int32.Parse((CMB_AddStage_Entreprise.SelectedItem as ComboBoxItem).Value.ToString()));
+            }
         }
 
         #endregion
@@ -214,22 +319,49 @@ namespace CSharpApp
 
         private void DGV_Etudiants_SelectionChanged(object sender, EventArgs e)
         {
-
+            // No need to do anything.
         }
 
         private void DGV_StagesEntreprise_SelectionChanged(object sender, EventArgs e)
         {
-
+            // No need to do anything.
         }
 
         private void DGV_DeleteStage_SelectionChanged(object sender, EventArgs e)
         {
-
+            BTN_DeleteStage2.Enabled = DGV_DeleteStage.SelectedRows.Count == 1;
         }
 
         private void DGV_Panel1_SelectionChanged(object sender, EventArgs e)
         {
+            if (DGV_Panel1.SelectedRows.Count == 1)
+            {
+                // Get selected row to access its content
+                var row = DGV_Panel1.SelectedRows[0];
+                // Put description in RTB
+                RTB_Description.Text = row.Cells[1].Value.ToString();
+            }
+            else RTB_Description.Text = "";
+        }
 
+        #endregion
+
+        #region Text Listeners
+        void RTB_Description_Text_Changed(object sender, EventArgs e)
+        {
+            BTN_ModifyDescription.Enabled = !String.IsNullOrEmpty(((RichTextBox)sender).Text) && 
+                                            DGV_Panel1.SelectedRows.Count == 1;
+        }
+
+        void RTB_AddStage_Text_Changed(object sender, EventArgs e)
+        {
+            BTN_AddStage.Enabled = !String.IsNullOrEmpty(RTB_AddStage_Description.Text) && 
+                                   !String.IsNullOrEmpty(RTB_AddStage_Langages.Text) &&
+                                   !String.IsNullOrEmpty(RTB_AddStage_Plateforme.Text) &&
+                                   !String.IsNullOrEmpty(RTB_AddStage_TypeStg.Text) &&
+                                   !String.IsNullOrEmpty(CMB_AddStage_Entreprise.Text) &&
+                                   !String.IsNullOrEmpty(CMB_AddStage_Moniteur.Text) &&
+                                   !String.IsNullOrEmpty(CMB_AddStage_Stagiaire.Text);
         }
 
         #endregion

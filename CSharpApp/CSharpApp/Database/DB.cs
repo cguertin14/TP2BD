@@ -32,7 +32,69 @@ namespace CSharpApp.Database
                 MessageBox.Show(e.Message);
             }
         }
-        
+
+        #region Raw Queries
+        public static void getEntreprises(ComboBox cmb)
+        {
+            try
+            {
+                fillCombobox("Select * From ENTREPRISES", cmb,1);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        public static void getStages(ComboBox cmb)
+        {
+            try
+            {
+                fillCombobox("Select * From STAGES", cmb,1);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        public static void getSuperviseurs(ComboBox cmb)
+        {
+            try
+            {
+                fillCombobox("Select * From SUPERVISEURS", cmb,2);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        public static void getMoniteurs(ComboBox cmb)
+        {
+            try
+            {
+                fillCombobox("Select * From MONITEURS", cmb,2);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        public static void getStagiaires(ComboBox cmb)
+        {
+            try
+            {
+                fillCombobox("Select * From STAGIAIRES", cmb,2);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+        #endregion
+
         #region Stored Procedures
 
         public static void addStage(Stage stage)
@@ -88,10 +150,15 @@ namespace CSharpApp.Database
                 #region Execute procedure
                 command.ExecuteNonQuery();
                 #endregion
+
+                // Notify User of insertion in database
+                MessageBox.Show("Stage créé!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                // Notify User of insertion failure in database
+                MessageBox.Show("Le stage n'a pas pu être créé, vérifiez que vos entrées soient valides.", "Erreur",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -124,7 +191,7 @@ namespace CSharpApp.Database
             }
         }
 
-        public static void getStagesFromEntreprise(Entreprise entreprise,DataGridView dgv)
+        public static void getStagesFromEntreprise(string noment,DataGridView dgv)
         {
             try
             {            
@@ -136,7 +203,7 @@ namespace CSharpApp.Database
                 #region Create parameter
                 SqlParameter pnoment = new SqlParameter("@PNOMENT", SqlDbType.VarChar, 255);
                 pnoment.Direction = ParameterDirection.Input;
-                pnoment.Value = entreprise.NomEnt;
+                pnoment.Value = noment;
                 #endregion
 
                 #region Add parameter to command
@@ -157,7 +224,31 @@ namespace CSharpApp.Database
             }
         }
 
-        public void updateDescription(Stage stage)
+        public static void getStagesDGV(DataGridView dgv)
+        {
+            try
+            {
+                List<ComboBoxItem> toAppend = new List<ComboBoxItem>();
+                #region Create command
+                SqlCommand command = new SqlCommand("GETEVERYSTAGES", Connection);
+                command.CommandType = CommandType.StoredProcedure;
+                #endregion
+                #region Fill data into DGV
+                DataTable dt = new DataTable();
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                adapter.Fill(dt);
+                BindingSource source = new BindingSource(dt, dt.TableName);
+                dgv.DataSource = source;
+                dgv.Columns[0].Visible = false;
+                #endregion
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        public static void updateDescription(Stage stage)
         {
             try
             {
@@ -183,6 +274,46 @@ namespace CSharpApp.Database
 
                 #region Execute procedure
                 command.ExecuteNonQuery();
+                #endregion
+
+                MessageBox.Show("Description modifiée!","Succès",MessageBoxButtons.OK,MessageBoxIcon.Information);
+            }
+            catch (Exception e)
+            {
+                // Notify User of insertion failure in database
+                MessageBox.Show("La description n'a pas pu être modifiée, vérifiez que votre entrée soit valide.", "Erreur",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }        
+
+        public static void getMoniteursFromEntreprise(ComboBox cmb,int nument)
+        {
+            try
+            {
+                #region Create command
+                SqlCommand command = new SqlCommand("GETMONITEURSFROMENTREPRISE", Connection);
+                command.CommandType = CommandType.StoredProcedure;
+                #endregion
+
+                #region Create parameters
+                SqlParameter pnumstage = new SqlParameter("@PNUMENT", SqlDbType.Int);
+                pnumstage.Direction = ParameterDirection.Input;
+                pnumstage.Value = nument;
+                #endregion
+
+                #region Add parameters to command
+                command.Parameters.Add(pnumstage);
+                #endregion
+
+                #region Execute procedure and put data into combobox
+                using (var reader = command.ExecuteReader())
+                {
+                    cmb.Items.Clear();
+                    while (reader.Read())
+                        cmb.Items.Add(new ComboBoxItem(reader[1].ToString() + " " + reader[2].ToString(), reader[0].ToString()));
+                    cmb.SelectedIndex = 0;
+                    reader.Close();
+                }
                 #endregion
             }
             catch (Exception e)
@@ -218,25 +349,24 @@ namespace CSharpApp.Database
             }
         }
 
-        public static int getNbStagesByEntreprise(Entreprise entreprise)
+        public static int getNbStagesByEntreprise(int nument)
         {
             try
             {
                 #region Create command
-                SqlCommand command = new SqlCommand("GETNBSTAGESBYENTREPRISE", Connection);
-                command.CommandType = CommandType.StoredProcedure;
+                SqlCommand command = new SqlCommand("select dbo.GETNBSTAGESBYENTREPRISE(@PNUMENT)", Connection);
+                command.CommandType = CommandType.Text;
                 #endregion
 
                 #region Create parameters
                 SqlParameter pnument = new SqlParameter("@PNUMENT", SqlDbType.Int);
                 pnument.Direction = ParameterDirection.Input;
-                pnument.Value = entreprise.NumEnt;
+                pnument.Value = nument;
                 #endregion
 
                 #region Add parameters to command
                 command.Parameters.Add(pnument);
                 #endregion
-
                 #region Return result of query
                 return Int32.Parse(command.ExecuteScalar().ToString());
                 #endregion
@@ -251,19 +381,38 @@ namespace CSharpApp.Database
 
         #endregion
 
-        public List<ComboBoxItem> getCommanditaires()
+        #region ComboBox data utility
+        private static void fillCombobox(string query, ComboBox cmb, int nbItems)
         {
             try
             {
-                List<ComboBoxItem> toReturn = new List<ComboBoxItem>();
-
-                return toReturn;
+                List<ComboBoxItem> toAppend = new List<ComboBoxItem>();
+                #region Create command
+                SqlCommand command = new SqlCommand(query, Connection);
+                command.CommandType = CommandType.Text;
+                #endregion
+                #region Fill data into list
+                using (var reader = command.ExecuteReader())
+                {
+                    string result = "";
+                    while (reader.Read())
+                    {
+                        for (int i = 1; i <= nbItems; ++i)
+                            result += (i > 1 ? " " + reader[i] : reader[i]);
+                        toAppend.Add(new ComboBoxItem(result, reader[0].ToString()));
+                        result = "";
+                    }
+                    reader.Close();
+                }
+                foreach (ComboBoxItem cmbItem in toAppend)
+                    cmb.Items.Add(cmbItem);
+                #endregion
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
-                return null;
             }
         }
+        #endregion
     }
 }

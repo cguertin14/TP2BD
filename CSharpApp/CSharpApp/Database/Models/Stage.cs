@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CSharpApp.Database.Models
 {
@@ -29,11 +30,28 @@ namespace CSharpApp.Database.Models
             this.NumAd = numAd;
         }
 
+        public Stage(DataGridViewRow data,string newDescription)
+        {
+            this.NumStage = Int32.Parse(data.Cells[0].Value.ToString());
+            this.Description = newDescription;
+            this.Langages = data.Cells[2].Value.ToString();
+            this.Plateformes = data.Cells[3].Value.ToString();
+        }
+
+        public Stage(DataGridViewRow data)
+        {
+            this.NumStage = Int32.Parse(data.Cells[0].Value.ToString());
+            this.Description = data.Cells[1].Value.ToString();
+            this.Langages = data.Cells[2].Value.ToString();
+            this.Plateformes = data.Cells[3].Value.ToString();
+        }
+
         // Stage to show.
-        public Stage(string description, string langages, string plateformes, int numEnt, int numTr, int numAd)
+        public Stage(string description,string typestg, string langages, string plateformes, int numEnt, int numTr, int numAd)
         {
             this.NumStage = 0;
             this.Description = description;
+            this.TypeStg = typestg;
             this.Langages = langages;
             this.Plateformes = plateformes;
             this.NumEnt = numEnt;

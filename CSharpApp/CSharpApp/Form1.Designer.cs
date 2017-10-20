@@ -38,6 +38,15 @@
             this.LBL_StagesParEntreprises = new System.Windows.Forms.Label();
             this.PNL_Content1 = new System.Windows.Forms.Panel();
             this.PNL_Content2 = new System.Windows.Forms.Panel();
+            this.BTN_DeleteStage2 = new System.Windows.Forms.Button();
+            this.BTN_DeleteStage = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.DGV_DeleteStage = new System.Windows.Forms.DataGridView();
+            this.BTN_ModifyDescription = new System.Windows.Forms.Button();
+            this.RTB_Description = new System.Windows.Forms.RichTextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.DGV_Panel1 = new System.Windows.Forms.DataGridView();
             this.PNL_Content3 = new System.Windows.Forms.Panel();
             this.PNL_Content4 = new System.Windows.Forms.Panel();
             this.PNL_Content5 = new System.Windows.Forms.Panel();
@@ -63,15 +72,6 @@
             this.LBL_AddStage_Description = new System.Windows.Forms.Label();
             this.RTB_AddStage_Description = new System.Windows.Forms.RichTextBox();
             this.BTN_AddStage = new System.Windows.Forms.Button();
-            this.BTN_DeleteStage2 = new System.Windows.Forms.Button();
-            this.BTN_DeleteStage = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.DGV_DeleteStage = new System.Windows.Forms.DataGridView();
-            this.BTN_ModifyDescription = new System.Windows.Forms.Button();
-            this.RTB_Description = new System.Windows.Forms.RichTextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.DGV_Panel1 = new System.Windows.Forms.DataGridView();
             this.PNL_Header5 = new System.Windows.Forms.Panel();
             this.LBL_ = new System.Windows.Forms.Label();
             this.PNL_Header1.SuspendLayout();
@@ -80,13 +80,13 @@
             this.PNL_Header4.SuspendLayout();
             this.PNL_Content1.SuspendLayout();
             this.PNL_Content2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_DeleteStage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_Panel1)).BeginInit();
             this.PNL_Content3.SuspendLayout();
             this.PNL_Content4.SuspendLayout();
             this.PNL_Content5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Etudiants)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_StagesEntreprise)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DGV_DeleteStage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DGV_Panel1)).BeginInit();
             this.PNL_Header5.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -198,6 +198,94 @@
             this.PNL_Content2.Name = "PNL_Content2";
             this.PNL_Content2.Size = new System.Drawing.Size(1424, 676);
             this.PNL_Content2.TabIndex = 3;
+            // 
+            // BTN_DeleteStage2
+            // 
+            this.BTN_DeleteStage2.Location = new System.Drawing.Point(1205, 576);
+            this.BTN_DeleteStage2.Name = "BTN_DeleteStage2";
+            this.BTN_DeleteStage2.Size = new System.Drawing.Size(210, 75);
+            this.BTN_DeleteStage2.TabIndex = 20;
+            this.BTN_DeleteStage2.Text = "Supprimer";
+            this.BTN_DeleteStage2.UseVisualStyleBackColor = true;
+            this.BTN_DeleteStage2.Click += new System.EventHandler(this.BTN_DeleteStage_Click);
+            // 
+            // BTN_DeleteStage
+            // 
+            this.BTN_DeleteStage.Location = new System.Drawing.Point(1480, 578);
+            this.BTN_DeleteStage.Name = "BTN_DeleteStage";
+            this.BTN_DeleteStage.Size = new System.Drawing.Size(210, 75);
+            this.BTN_DeleteStage.TabIndex = 9;
+            this.BTN_DeleteStage.Text = "Supprimer";
+            this.BTN_DeleteStage.UseVisualStyleBackColor = true;
+            this.BTN_DeleteStage.Click += new System.EventHandler(this.BTN_DeleteStage_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(8, 14);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(221, 25);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Sélectionner un stage";
+            // 
+            // DGV_DeleteStage
+            // 
+            this.DGV_DeleteStage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_DeleteStage.Location = new System.Drawing.Point(8, 66);
+            this.DGV_DeleteStage.Name = "DGV_DeleteStage";
+            this.DGV_DeleteStage.RowTemplate.Height = 33;
+            this.DGV_DeleteStage.Size = new System.Drawing.Size(1407, 488);
+            this.DGV_DeleteStage.TabIndex = 4;
+            this.DGV_DeleteStage.SelectionChanged += new System.EventHandler(this.DGV_DeleteStage_SelectionChanged);
+            // 
+            // BTN_ModifyDescription
+            // 
+            this.BTN_ModifyDescription.Location = new System.Drawing.Point(1192, 576);
+            this.BTN_ModifyDescription.Name = "BTN_ModifyDescription";
+            this.BTN_ModifyDescription.Size = new System.Drawing.Size(210, 75);
+            this.BTN_ModifyDescription.TabIndex = 8;
+            this.BTN_ModifyDescription.Text = "Modifier";
+            this.BTN_ModifyDescription.UseVisualStyleBackColor = true;
+            this.BTN_ModifyDescription.Click += new System.EventHandler(this.BTN_ModifyDescription_Click);
+            // 
+            // RTB_Description
+            // 
+            this.RTB_Description.Location = new System.Drawing.Point(731, 66);
+            this.RTB_Description.Name = "RTB_Description";
+            this.RTB_Description.Size = new System.Drawing.Size(675, 488);
+            this.RTB_Description.TabIndex = 7;
+            this.RTB_Description.Text = "";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(726, 23);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(347, 25);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "2- Donner une nouvelle description";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(8, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(186, 25);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "1- Choisir le stage";
+            // 
+            // DGV_Panel1
+            // 
+            this.DGV_Panel1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_Panel1.Location = new System.Drawing.Point(13, 66);
+            this.DGV_Panel1.Name = "DGV_Panel1";
+            this.DGV_Panel1.RowTemplate.Height = 33;
+            this.DGV_Panel1.Size = new System.Drawing.Size(676, 576);
+            this.DGV_Panel1.TabIndex = 4;
+            this.DGV_Panel1.SelectionChanged += new System.EventHandler(this.DGV_Panel1_SelectionChanged);
             // 
             // PNL_Content3
             // 
@@ -449,94 +537,6 @@
             this.BTN_AddStage.UseVisualStyleBackColor = true;
             this.BTN_AddStage.Click += new System.EventHandler(this.BTN_AddStage_Click);
             // 
-            // BTN_DeleteStage2
-            // 
-            this.BTN_DeleteStage2.Location = new System.Drawing.Point(1205, 576);
-            this.BTN_DeleteStage2.Name = "BTN_DeleteStage2";
-            this.BTN_DeleteStage2.Size = new System.Drawing.Size(210, 75);
-            this.BTN_DeleteStage2.TabIndex = 20;
-            this.BTN_DeleteStage2.Text = "Supprimer";
-            this.BTN_DeleteStage2.UseVisualStyleBackColor = true;
-            this.BTN_DeleteStage2.Click += new System.EventHandler(this.BTN_DeleteStage_Click);
-            // 
-            // BTN_DeleteStage
-            // 
-            this.BTN_DeleteStage.Location = new System.Drawing.Point(1480, 578);
-            this.BTN_DeleteStage.Name = "BTN_DeleteStage";
-            this.BTN_DeleteStage.Size = new System.Drawing.Size(210, 75);
-            this.BTN_DeleteStage.TabIndex = 9;
-            this.BTN_DeleteStage.Text = "Supprimer";
-            this.BTN_DeleteStage.UseVisualStyleBackColor = true;
-            this.BTN_DeleteStage.Click += new System.EventHandler(this.BTN_DeleteStage_Click);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(8, 14);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(221, 25);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Sélectionner un stage";
-            // 
-            // DGV_DeleteStage
-            // 
-            this.DGV_DeleteStage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_DeleteStage.Location = new System.Drawing.Point(8, 66);
-            this.DGV_DeleteStage.Name = "DGV_DeleteStage";
-            this.DGV_DeleteStage.RowTemplate.Height = 33;
-            this.DGV_DeleteStage.Size = new System.Drawing.Size(1407, 488);
-            this.DGV_DeleteStage.TabIndex = 4;
-            this.DGV_DeleteStage.SelectionChanged += new System.EventHandler(this.DGV_DeleteStage_SelectionChanged);
-            // 
-            // BTN_ModifyDescription
-            // 
-            this.BTN_ModifyDescription.Location = new System.Drawing.Point(1192, 576);
-            this.BTN_ModifyDescription.Name = "BTN_ModifyDescription";
-            this.BTN_ModifyDescription.Size = new System.Drawing.Size(210, 75);
-            this.BTN_ModifyDescription.TabIndex = 8;
-            this.BTN_ModifyDescription.Text = "Modifier";
-            this.BTN_ModifyDescription.UseVisualStyleBackColor = true;
-            this.BTN_ModifyDescription.Click += new System.EventHandler(this.BTN_ModifyDescription_Click);
-            // 
-            // RTB_Description
-            // 
-            this.RTB_Description.Location = new System.Drawing.Point(731, 66);
-            this.RTB_Description.Name = "RTB_Description";
-            this.RTB_Description.Size = new System.Drawing.Size(675, 488);
-            this.RTB_Description.TabIndex = 7;
-            this.RTB_Description.Text = "";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(726, 23);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(347, 25);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "2- Donner une nouvelle description";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(8, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(186, 25);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "1- Choisir le stage";
-            // 
-            // DGV_Panel1
-            // 
-            this.DGV_Panel1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_Panel1.Location = new System.Drawing.Point(13, 66);
-            this.DGV_Panel1.Name = "DGV_Panel1";
-            this.DGV_Panel1.RowTemplate.Height = 33;
-            this.DGV_Panel1.Size = new System.Drawing.Size(676, 576);
-            this.DGV_Panel1.TabIndex = 4;
-            this.DGV_Panel1.SelectionChanged += new System.EventHandler(this.DGV_Panel1_SelectionChanged);
-            // 
             // PNL_Header5
             // 
             this.PNL_Header5.Controls.Add(this.LBL_);
@@ -577,7 +577,7 @@
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "TP#2BD";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.PNL_Header1.ResumeLayout(false);
             this.PNL_Header1.PerformLayout();
@@ -591,6 +591,8 @@
             this.PNL_Content1.PerformLayout();
             this.PNL_Content2.ResumeLayout(false);
             this.PNL_Content2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_DeleteStage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_Panel1)).EndInit();
             this.PNL_Content3.ResumeLayout(false);
             this.PNL_Content3.PerformLayout();
             this.PNL_Content4.ResumeLayout(false);
@@ -599,8 +601,6 @@
             this.PNL_Content5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Etudiants)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_StagesEntreprise)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DGV_DeleteStage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DGV_Panel1)).EndInit();
             this.PNL_Header5.ResumeLayout(false);
             this.PNL_Header5.PerformLayout();
             this.ResumeLayout(false);
